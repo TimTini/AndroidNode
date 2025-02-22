@@ -4,7 +4,7 @@
 termux-change-repo
 pkg update -y && pkg upgrade -y
 pkg install -y proot-distro pulseaudio x11-repo
-# pkg install -y termux-x11-nightly
+pkg install -y termux-x11-nightly
 
 # Cài đặt Debian
 proot-distro install debian
