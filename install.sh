@@ -3,7 +3,8 @@
 # Cập nhật & cài đặt các gói cần thiết trong Termux
 termux-change-repo
 pkg update -y && pkg upgrade -y
-pkg install -y proot-distro pulseaudio x11-repo termux-x11-nightly
+pkg install -y proot-distro pulseaudio x11-repo
+pkg install -y termux-x11-nightly
 
 # Cài đặt Debian
 proot-distro install debian
