@@ -5,9 +5,5 @@
 Chạy các lệnh sau trên Termux:
 
 ```sh
-pkg install git -y
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-chmod +x install.sh
-./install.sh
+curl -Lf https://raw.githubusercontent.com/TimTini/AndroidNode/refs/heads/main/install.sh -o install.sh && chmod +x install.sh && ./install.sh
 ```
