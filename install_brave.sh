@@ -19,7 +19,7 @@ update_brave_desktop() {
     if [ -n "$desktop_file" ]; then
         echo "Updating $desktop_file to add --no-sandbox..."
         sed -i 's|Exec=brave-browser %U|Exec=brave-browser --no-sandbox %U|' "$desktop_file"
-
+        sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable --no-sandbox %U|' "$desktop_file"
         # Update the application database cache
         update-desktop-database ~/.local/share/applications/
     else
