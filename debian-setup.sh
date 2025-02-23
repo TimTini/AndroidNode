@@ -10,6 +10,31 @@ chmod +x ~/.vnc/xstartup
 curl -fsS https://dl.brave.com/install.sh | bash
 
 
+# Tạo script chạy Brave với --no-sandbox
+mkdir -p "$HOME/bin"
+echo '#!/bin/sh' > "$HOME/bin/brave-no-sandbox"
+echo 'brave-browser --no-sandbox "$@"' >> "$HOME/bin/brave-no-sandbox"
+chmod +x "$HOME/bin/brave-no-sandbox"
+
+# Tạo file desktop entry cho Application Finder
+mkdir -p "$HOME/.local/share/applications"
+cat > "$HOME/.local/share/applications/brave-no-sandbox.desktop" <<EOF
+[Desktop Entry]
+Version=1.0
+Name=Brave (No Sandbox)
+Comment=Launch Brave Browser with --no-sandbox
+Exec=$HOME/bin/brave-no-sandbox %U
+Icon=brave-browser
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+StartupWMClass=brave-browser
+EOF
+
+# Cập nhật Application Finder
+update-desktop-database ~/.local/share/applications/
+
+
 # Thiết lập lệnh nhanh (tx11 & vnc)
 mkdir -p $HOME/bin
 curl -Lf https://raw.githubusercontent.com/TimTini/AndroidNode/main/tx11.sh -o $HOME/bin/tx11
