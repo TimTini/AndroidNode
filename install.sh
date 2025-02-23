@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Xóa Debian nếu đã tồn tại để đảm bảo cài đặt mới
+if proot-distro list | grep -q debian; then
+    echo "Đang xóa Debian cũ..."
+    proot-distro remove debian
+    rm -rf ~/.proot_debian  # Xóa thư mục dữ liệu cũ nếu có
+fi
+
 # Cập nhật & cài đặt các gói cần thiết trong Termux
 termux-change-repo
 pkg update -y && pkg upgrade -y
@@ -9,25 +16,12 @@ pkg install -y termux-x11-nightly
 # Cài đặt Debian
 proot-distro install debian
 
+# Tải script cài đặt Debian từ GitHub
+curl -Lf --no-cache --progress-bar -o "$HOME/debian-setup.sh" "https://raw.githubusercontent.com/TimTini/AndroidNode/main/debian-setup.sh?$(date +%s)"
+chmod +x $HOME/debian-setup.sh
+
+# Copy file vào thư mục Debian
+proot-distro login debian -- cp "$HOME/debian-setup.sh" "/root/debian-setup.sh"
+
 # Chạy lệnh bên trong Debian
-proot-distro login debian -- bash -c "
-    apt update -y
-    apt install -y curl xfce4 xfce4-goodies dbus-x11 tightvncserver autocutsel
-
-    # Cấu hình VNC xstartup
-    curl -Lf https://raw.githubusercontent.com/TimTini/AndroidNode/main/xstartup -o ~/.vnc/xstartup
-    chmod +x ~/.vnc/xstartup
-
-    # Cài Brave Browser
-    curl -fsS https://dl.brave.com/install.sh | bash
-"
-
-# Thiết lập lệnh nhanh (tx11 & vnc)
-mkdir -p $HOME/bin
-curl -Lf https://raw.githubusercontent.com/TimTini/AndroidNode/main/tx11.sh -o $HOME/bin/tx11
-curl -Lf https://raw.githubusercontent.com/TimTini/AndroidNode/main/vnc.sh -o $HOME/bin/vnc
-chmod +x $HOME/bin/tx11 $HOME/bin/vnc
-
-# Thêm ~/bin vào PATH nếu chưa có
-grep -qxF 'export PATH=$HOME/bin:$PATH' $HOME/.bashrc || echo 'export PATH=$HOME/bin:$PATH' >> $HOME/.bashrc
-export PATH=$HOME/bin:$PATH
+proot-distro login debian -- /bin/sh /root/debian-setup.sh

@@ -1,10 +1,30 @@
 #!/bin/sh
+# xrdb "$HOME/.Xresources"
+# xsetroot -solid grey 
+# # Thêm dòng này để enable clipboard autocutsel -fork
+# autocutsel -fork
+# #x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VN>
+# #x-window-manager &
+# # Fix to make GNOME work
+# export XKL_XMODMAP_DISABLE=1
+# /etc/X11/Xsession
+
+# Kiểm tra và tạo ~/.Xresources nếu chưa tồn tại
+if [ ! -f "$HOME/.Xresources" ]; then
+    echo "! Default Xresources file" > "$HOME/.Xresources"
+fi
+
 xrdb "$HOME/.Xresources"
-xsetroot -solid grey 
-# Thêm dòng này để enable clipboard autocutsel -fork
-autocutsel -fork
-#x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VN>
-#x-window-manager &
-# Fix to make GNOME work
-export XKL_XMODMAP_DISABLE=1
-/etc/X11/Xsession
+xsetroot -solid grey
+
+# Đảm bảo autocutsel không bị chạy nhiều lần
+if ! pgrep -x "autocutsel" > /dev/null; then
+    autocutsel -fork
+fi
+
+# Khởi động XFCE4 một cách an toàn
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    eval "$(dbus-launch --sh-syntax --exit-with-session)"
+fi
+
+startxfce4
