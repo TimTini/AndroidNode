@@ -14,7 +14,7 @@ find_brave_desktop_file() {
 
 # Function to update Brave .desktop file to add --no-sandbox
 update_brave_desktop() {
-    local desktop_file="$1"
+    local desktop_file=$(find_brave_desktop_file)
 
     if [ -n "$desktop_file" ]; then
         echo "Updating $desktop_file to add --no-sandbox..."
@@ -29,5 +29,4 @@ update_brave_desktop() {
 
 # Main execution flow
 install_brave
-BRAVE_DESKTOP=$(find_brave_desktop_file)
-update_brave_desktop "$BRAVE_DESKTOP"
+update_brave_desktop
