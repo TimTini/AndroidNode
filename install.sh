@@ -23,3 +23,5 @@ proot-distro login debian -- cp "$HOME/debian-setup.sh" "/root/debian-setup.sh"
 
 # Chạy lệnh bên trong Debian
 proot-distro login debian -- /bin/sh /root/debian-setup.sh
+
+proot-distro login debian
