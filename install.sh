@@ -38,9 +38,22 @@ run_debian_setup() {
     proot-distro login debian -- /bin/sh /root/debian-setup.sh
 }
 
+# Function to install custom scripts (tx11 & vnc)
+install_custom_scripts() {
+    echo "Installing custom start script"
+
+    mkdir -p "$HOME/bin"
+
+    local login_url="https://raw.githubusercontent.com/TimTini/AndroidNode/main/login.sh"
+
+    curl -Lf --progress-bar -o "$HOME/bin/start" "${login_url}?$(date +%s)"
+
+    chmod +x "$HOME/bin/start"
+}
 # Main execution flow
 install_packages
 install_debian
+install_custom_scripts
 setup_debian_script
 run_debian_setup
 
