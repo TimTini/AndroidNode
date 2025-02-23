@@ -16,16 +16,13 @@ find_brave_desktop_file() {
 update_brave_desktop() {
     local desktop_file=$(find_brave_desktop_file)
 
-    if [ -n "$desktop_file" ]; then
-        echo "Updating $desktop_file to add --no-sandbox..."
-        sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable --no-sandbox %U|' $desktop_file
-        # Update the application database cache
-        update-desktop-database ~/.local/share/applications/
-    else
-        echo "Brave .desktop file not found!"
-    fi
+    sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable --no-sandbox %U|' "$desktop_file"
+    # Update the application database cache
+    update-desktop-database ~/.local/share/applications/
 }
 
 # Main execution flow
 install_brave
 update_brave_desktop
+
+ sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable --no-sandbox %U|' ~/.local/share/applications/brave-browser.desktop
