@@ -28,6 +28,8 @@ setup_vnc_xstartup() {
     local xstartup_url="https://raw.githubusercontent.com/TimTini/AndroidNode/main/xstartup"
     local xstartup_path="$HOME/.vnc/xstartup"
 
+    mkdir -p "$HOME/.vnc"
+
     curl -Lf --progress-bar -o "$xstartup_path" "${xstartup_url}?$(date +%s)"
     chmod +x "$xstartup_path"
 }
