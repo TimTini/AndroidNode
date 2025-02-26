@@ -5,6 +5,7 @@ install_packages() {
     echo "Updating package lists and installing required packages..."
     apt update -y
     apt install -y curl xfce4 xfce4-goodies dbus-x11 tightvncserver autocutsel
+    
 }
 
 # Function to install Brave Browser
