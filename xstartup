@@ -13,16 +13,3 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 fi
 
 startxfce4
-
-
-# xrdb "$HOME/.Xresources"
-# xsetroot -solid grey 
-# # Thêm dòng này để enable clipboard autocutsel -fork
-# autocutsel -fork
-# #x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VN>
-# #x-window-manager &
-# # Fix to make GNOME work
-# export XKL_XMODMAP_DISABLE=1
-# /etc/X11/Xsession
-
-# Kiểm tra và tạo ~/.Xresources nếu chưa tồn tại
