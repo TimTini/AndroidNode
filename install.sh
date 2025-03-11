@@ -4,9 +4,16 @@
 install_packages() {
     echo "Updating package lists and installing required packages..."
     termux-change-repo
+    # common packages
     pkg update -y && pkg upgrade -y
     pkg install -y proot-distro pulseaudio x11-repo
     pkg install -y termux-x11-nightly
+    # GPU packages
+    pkg install tur-repo
+    pkg install mesa-zink virglrenderer-mesa-zink vulkan-loader-android
+    # Run the Zink test server
+    MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless &
+
 }
 
 # Function to install or reinstall Debian in proot-distro
@@ -37,6 +44,24 @@ run_debian_setup() {
     echo "Running Debian setup script inside Debian..."
     proot-distro login debian -- /bin/sh /root/debian-setup.sh
 }
+add_env_variable() {
+    local var_name="$1"
+    local var_value="$2"
+    local bashrc_file="$HOME/.bashrc"
+
+    # Kiểm tra xem biến đã tồn tại chưa
+    if ! grep -q "export $var_name=" "$bashrc_file"; then
+        echo "Thêm biến môi trường: $var_name"
+        echo "export $var_name=\"$var_value\"" >> "$bashrc_file"
+    else
+        echo "Biến $var_name đã tồn tại trong $bashrc_file"
+    fi
+}
+
+make_variable_environment() {
+    add_env_variable "PATH" "$HOME/bin:$PATH"
+}
+
 
 # Function to install custom scripts (tx11 & vnc)
 install_custom_scripts() {
@@ -53,10 +78,12 @@ install_custom_scripts() {
 # Main execution flow
 install_packages
 install_debian
+# make_variable_environment
 install_custom_scripts
 setup_debian_script
 run_debian_setup
-
+# Download the start script
+curl -Lf --progress-bar -o "$HOME/start.sh" "https://raw.githubusercontent.com/TimTini/AndroidNode/main/login.sh" && chmod +x "$HOME/start.sh"
 # Log into Debian environment
 echo "Logging into Debian..."
 proot-distro login debian
